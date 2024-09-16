@@ -32,7 +32,7 @@ int main(void)
         printf("IIC初始化失败\r\n");
         return fd;
     }
-
+    printf("%f\n",fd);
     OLED_Init();
     OLED_Clear();
     //InitScreen();

@@ -5,7 +5,12 @@
  
 uint8_t OLED_GRAM[144][8];
 
-extern void oled_write_one_byte(uint8_t dat,uint8_t mode);
+//extern void oled_write_one_byte(uint8_t dat,uint8_t mode);
+//
+void oled_write_one_byte(uint8_t dat,uint8_t mode)
+{
+    wiringPiI2CWriteReg8(4,mode,dat);
+}
 
 void OLED_WR_Byte(uint8_t dat,uint8_t mode)
 {

@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cstring>
+extern void oled_write_one_byte(uint8_t dat,uint8_t mode);
 extern "C"
 {
     #include <wiringPi.h>
@@ -8,9 +9,16 @@ extern "C"
     #include "GCFK.h"
     #include <stdio.h>
     #include <string.h>
+    #include "stdlib.h"
 }
 using namespace std;
 
+int fd;
+
+void oled_write_one_byte(uint8_t dat,uint8_t mode)
+{
+    wiringPiI2CWriteReg8(fd,mode,dat);
+}
 
 void InitScreen()	//画上四分之一部分的框
 {
@@ -51,7 +59,6 @@ string GSFK() //Get String From Keyboard
 
 int Init()
 {
-    int fd;
     if(wiringPiSetup() < 0) //当使用这个函数初始化树莓派引脚时，程序使用的是wiringPi 引脚编号表。
         return 1;
     fd = wiringPiI2CSetup (SlaveAddress);
@@ -65,7 +72,7 @@ int Init()
 
 int main()
 {
-    if(Init() != 0) return Init();
+    Init();
     OLED_Init();
     OLED_Clear();
 
