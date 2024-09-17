@@ -2,6 +2,8 @@
 #include "stdlib.h"
 #include "font.h"
 #include <stdio.h>
+#include <wiringPi.h>
+#include <wiringPiI2C.h>
  
 uint8_t OLED_GRAM[144][8];
 
@@ -9,7 +11,12 @@ uint8_t OLED_GRAM[144][8];
 //
 void oled_write_one_byte(uint8_t dat,uint8_t mode)
 {
-    wiringPiI2CWriteReg8(4,mode,dat);
+    int fd;
+    FILE * pf = fopen("./oled_fd.ini","r");
+    fscanf(pf,"%d",&fd);
+    wiringPiI2CWriteReg8(fd,mode,dat);
+    fclose(pf);
+    pf = NULL;
 }
 
 void OLED_WR_Byte(uint8_t dat,uint8_t mode)
