@@ -41,6 +41,11 @@ string GSFK() //Get String From Keyboard
     while(true)
     {
         ch_num = GetChar();
+        if(ch_num == 13)
+        {
+            system(STTY_DEF TTY_PATH);
+            break;
+        }
         if(ch_num == 127)
         {
             get_st.pop_back();
@@ -55,11 +60,12 @@ string GSFK() //Get String From Keyboard
             system(STTY_DEF TTY_PATH);
             break;
         }
-	cout << get_st << '\n';
+//	    cout << get_st << '\n';
         OLED_ShowString(1,1,(unsigned char *)get_st.c_str(),12,1);
         InitScreen();
         OLED_Refresh();
     }
+    cout << get_st << '\n';
     return get_st;
 }
 
@@ -80,12 +86,35 @@ int Init()
     return 0;
 }
 
+string ExecShell(string st) //执行语句并返回输出
+{
+    FILE *fp;
+    const int MAXN = 1E5;
+    char buffer[MAXN];
+//    int top = 0;
+    fp = popen(st.data(), "r");
+//    while((buffer[top] = fgetc(fp)) != EOF) top++;
+    fgets(buffer, sizeof(buffer), fp);
+    printf("%s", buffer);
+    pclose(fp);
+    return buffer;
+}
+
+void ExecScreen()
+{
+    string st_input = GSFK(), st_output = "";
+    st_output = ExecShell(st_input);
+    OLED_ShowString(0,16,(unsigned char *)st_output.c_str(),12,1);
+    OLED_Refresh();
+}
+
 int main()
 {
     Init();
     OLED_Init();
     OLED_Clear();
 
-    cout << GSFK() << '\n';
+    ExecScreen();
+
     return 0;
 }
