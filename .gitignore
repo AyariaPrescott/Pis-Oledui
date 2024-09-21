@@ -1,2 +1,5 @@
 /lib/
 main
+test
+/.vscode
+oled_fd.ini
