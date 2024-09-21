@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <sys/select.h>
   
 #define TTY_PATH            "/dev/tty"
 #define STTY_US             "stty raw -echo -F "
